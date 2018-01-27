@@ -1,7 +1,5 @@
 package br.com.livroandroid.carros.activity
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -12,7 +10,8 @@ import android.view.MenuItem
 import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.domain.TipoCarro
 import br.com.livroandroid.carros.extensions.setupToolbar
-import br.com.livroandroid.carros.extensions.toast
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,9 +39,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_item_carros_todos -> toast("Clicou em carros")
-            R.id.nav_item_carros_classicos -> onClickNavigation(context, TipoCarro.classicos)
-            R.id.nav_item_carros_esportivos -> onClickNavigation(context, TipoCarro.esportivos)
-            R.id.nav_item_carros_luxo -> onClickNavigation(context, TipoCarro.luxo)
+            R.id.nav_item_carros_classicos ->
+                startActivity<CarrosActivity>("tipo" to TipoCarro.classicos)
+            R.id.nav_item_carros_esportivos ->
+                startActivity<CarrosActivity>("tipo" to TipoCarro.esportivos)
+            R.id.nav_item_carros_luxo ->
+                startActivity<CarrosActivity>("tipo" to TipoCarro.luxo)
             R.id.nav_item_site_livro -> toast("Clicou em site do livro")
             R.id.nav_item_settings -> toast("Clicou em configurações")
         }
@@ -52,15 +54,4 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
-
-    private fun onClickNavigation(context: Context,
-                                  tipo: TipoCarro,
-                                  activity: Class<CarrosActivity> = CarrosActivity::class.java) {
-        val intent = Intent(context, activity)
-        intent.putExtra("tipo", tipo)
-        startActivity(intent)
-
-    }
-
-
 }
