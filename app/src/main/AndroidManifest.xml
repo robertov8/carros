@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="br.com.livroandroid.carros">
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="br.com.livroandroid.carros">
+
+	<uses-permission android:name="android.permission.INTERNET" />
 
 	<application
 		android:name=".CarrosApplication"
@@ -10,6 +13,7 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
+
 		<activity
 			android:name=".activity.MainActivity"
 			android:theme="@style/AppTheme.NavDrawer">
@@ -24,8 +28,13 @@
 			android:parentActivityName=".activity.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-			    android:value=".activity.MainActivity" />
+				android:value=".activity.MainActivity"/>
 		</activity>
-	</application>
+		<activity
+			android:name=".activity.SiteLivroActivity"
+			android:parentActivityName=".activity.MainActivity">
+		</activity>
 
+
+	</application>
 </manifest>
