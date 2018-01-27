@@ -34,7 +34,5 @@
 			android:name=".activity.SiteLivroActivity"
 			android:parentActivityName=".activity.MainActivity">
 		</activity>
-
-
 	</application>
 </manifest>
