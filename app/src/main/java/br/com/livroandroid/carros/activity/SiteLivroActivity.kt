@@ -8,10 +8,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import br.com.livroandroid.carros.R
+import br.com.livroandroid.carros.activity.dialogs.AboutDialog
 import br.com.livroandroid.carros.extensions.setupToolbar
 
 class SiteLivroActivity : BaseActivity() {
-    private val URL_SOBRE = "http://livroandroid.com.br/sobre.htm"
+    private val URL_SOBRE = "http://www.livroandroid.com.br/sobre.htm"
     var webview: WebView? = null
     var progress: ProgressBar? = null
     var swipeToRefresh: SwipeRefreshLayout? = null
@@ -55,6 +56,18 @@ class SiteLivroActivity : BaseActivity() {
                 // Desliga o progress
                 progress?.visibility = View.INVISIBLE
                 swipeToRefresh?.isRefreshing = false
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: String?): Boolean {
+                val url = request ?: ""
+
+                if (url.endsWith("sobre.htm")) {
+                    // Mostra o dialog
+                    AboutDialog.showAbout(supportFragmentManager)
+                    // Retorna true para informar que interceptamos o evento
+                    return true
+                }
+                return super.shouldOverrideUrlLoading(view, request)
             }
         }
     }
