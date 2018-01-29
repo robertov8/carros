@@ -7,12 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.livroandroid.carros.R
+import br.com.livroandroid.carros.activity.CarroActivity
 import br.com.livroandroid.carros.adapter.CarroAdapter
 import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.domain.CarroService
 import br.com.livroandroid.carros.domain.TipoCarro
-import br.com.livroandroid.carros.extensions.toast
 import kotlinx.android.synthetic.main.fragment_carros.*
+import org.jetbrains.anko.startActivity
 
 class CarrosFragment : BaseFragment() {
     private var tipo: TipoCarro = TipoCarro.classicos
@@ -53,6 +54,7 @@ class CarrosFragment : BaseFragment() {
     }
 
     private fun onClickCarro(carro: Carro) {
-        toast("@Clicou no carro ${carro.nome}")
+        // Ao clicar no carro vamos navegar para a tela de detalhes[
+        activity.startActivity<CarroActivity>("carro" to carro)
     }
 }

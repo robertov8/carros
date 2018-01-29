@@ -1,6 +1,8 @@
 package br.com.livroandroid.carros.domain
 
-class Carro {
+import java.io.Serializable
+
+class Carro : Serializable {
     var id: Long = 0
     var tipo = ""
     var nome = ""
