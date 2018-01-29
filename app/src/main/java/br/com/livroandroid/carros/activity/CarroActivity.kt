@@ -8,7 +8,7 @@ import br.com.livroandroid.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro_contents.*
 
 class CarroActivity : BaseActivity() {
-    val carro by lazy { intent.getSerializableExtra("carro") as Carro}
+    val carro by lazy { intent.getParcelableExtra<Carro>("carro") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
