@@ -33,7 +33,4 @@ class TabsAdapter(private val context: Context, fm: FragmentManager) : FragmentP
         f.arguments.putSerializable("tipo", tipo)
         return f
     }
-
-
-
 }
