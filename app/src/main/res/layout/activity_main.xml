@@ -10,30 +10,37 @@
 	tools:context="br.com.livroandroid.carros.activity.MainActivity">
 
 	<!-- Bloco 1: conteúdo da tela -->
-	<LinearLayout
-		android:id="@+id/content"
-		android:orientation="vertical"
+	<android.support.design.widget.CoordinatorLayout
+		android:id="@+id/coordinatorLayout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<!-- Toolbar -->
-		<include layout="@layout/toolbar" />
-
-		<!-- Conteúdo aqui -->
-		<!-- Tabs + ViewPager -->
-		<android.support.design.widget.TabLayout
-			android:id="@+id/tabLayout"
-			android:background="@color/primary"
+		<LinearLayout
+			android:id="@+id/content"
+			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content" />
+			android:layout_height="match_parent">
 
-		<android.support.v4.view.ViewPager
-			android:id="@+id/viewPager"
-			android:layout_weight="1"
-			android:background="@android:color/white"
-			android:layout_width="match_parent"
-			android:layout_height="0px" />
+			<!-- Toolbar -->
+			<include layout="@layout/toolbar" />
 
+			<!-- Conteúdo aqui -->
+			<!-- Tabs + ViewPager -->
+			<android.support.design.widget.TabLayout
+				android:id="@+id/tabLayout"
+				android:background="@color/primary"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+
+			<android.support.v4.view.ViewPager
+				android:id="@+id/viewPager"
+				android:layout_weight="1"
+				android:background="@android:color/white"
+				android:layout_width="match_parent"
+				android:layout_height="0px" />
+		</LinearLayout>
+
+		<!-- FAB -->
 		<android.support.design.widget.FloatingActionButton
 			android:id="@+id/fab"
 			android:tint="#fff000"
@@ -43,7 +50,8 @@
 			android:layout_gravity="bottom|right"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
-	</LinearLayout>
+
+	</android.support.design.widget.CoordinatorLayout>
 
 	<!-- Bloco 2: nav drawer -->
 	<android.support.design.widget.NavigationView
