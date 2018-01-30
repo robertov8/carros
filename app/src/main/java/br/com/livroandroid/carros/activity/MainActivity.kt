@@ -2,14 +2,17 @@ package br.com.livroandroid.carros.activity
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import br.com.livroandroid.carros.R
+import br.com.livroandroid.carros.adapter.TabsAdapter
 import br.com.livroandroid.carros.domain.TipoCarro
 import br.com.livroandroid.carros.extensions.setupToolbar
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -20,6 +23,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setContentView(R.layout.activity_main)
         setupToolbar(R.id.toolbar)
         setupNavDrawer()
+        setupViewPagerTabs()
     }
 
     // Configura o Navigation Drawer
@@ -53,5 +57,18 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun setupViewPagerTabs() {
+        // Configura o ViewPager + Tabs
+        // As variáveis viewPager e tabLayout são geradas automaticament pelo
+        // Kotlin Extensions
+        viewPager.offscreenPageLimit = 2
+        viewPager.adapter = TabsAdapter(context, supportFragmentManager)
+        tabLayout.setupWithViewPager(viewPager)
+
+        // Cor branca no texto (o fundo azul é definido no layout)
+        val cor = ContextCompat.getColor(context, R.color.white)
+        tabLayout.setTabTextColors(cor, cor)
     }
 }
