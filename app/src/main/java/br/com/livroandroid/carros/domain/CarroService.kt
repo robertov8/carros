@@ -3,8 +3,7 @@ package br.com.livroandroid.carros.domain
 import android.content.Context
 import android.util.Log
 import br.com.livroandroid.carros.R
-import br.com.livroandroid.carros.extensions.getText
-import br.com.livroandroid.carros.extensions.getXml
+import org.json.JSONArray
 
 object CarroService {
     private val TAG = "livro"
@@ -18,9 +17,9 @@ object CarroService {
         val resources = context.resources
         val inputStream = resources.openRawResource(raw)
         inputStream.bufferedReader().use {
-            // Lê o XML e cria a lista de carros
-            val xml = it.readText()
-            return parserXML(xml)
+            // Lê o JSON e cria a lista de carros
+            val json = it.readText()
+            return parseJson(json)
         }
     }
 
@@ -31,19 +30,19 @@ object CarroService {
         else -> R.raw.carros_luxo
     }
 
-    // Lê o XML e cria a lista de carros
-    fun parserXML(xmlString: String): List<Carro> {
+    private fun parseJson(json: String): List<Carro> {
         val carros = mutableListOf<Carro>()
-        val xml = xmlString.getXml()
-        // Lê todas as tags <carro>
-        val nodeCarros = xml.getChildren("carro")
-        // Insere cada carro na lista
-        for (node in nodeCarros) {
+        // Cria um array com ese JSON
+        val array = JSONArray(json)
+        // Percorre cada carro (JSON)
+        for (i in 0..array.length() - 1) {
+            // JSON do carro
+            val jsonCarro = array.getJSONObject(i)
             val c = Carro()
             // Lê as informações de cada carro
-            c.nome = node.getText("nome")
-            c.desc = node.getText("desc")
-            c.urlFoto = node.getText("url_foto")
+            c.nome = jsonCarro.optString("nome")
+            c.desc = jsonCarro.optString("desc")
+            c.urlFoto = jsonCarro.optString("url_foto")
             carros.add(c)
         }
         Log.d(TAG, "${carros.size} carros encontrados.")
