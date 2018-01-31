@@ -3,28 +3,129 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:orientation="vertical"
-	android:padding="12dp"
+	android:padding="8dp"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
-	
-	<android.support.v7.widget.CardView
-		android:id="@+id/card_view"
-		app:cardBackgroundColor="@color/white"
-		app:cardCornerRadius="2dp"
-		app:cardElevation="6dp"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
 
-		<ScrollView
+	<!--CardView com a descrição do Carro-->
+	<android.support.v7.widget.CardView
+		android:layout_margin="6dp"
+		android:layout_marginTop="10dp"
+		app:cardElevation="3dp"
+		app:cardPreventCornerOverlap="false"
+		app:cardUseCompatPadding="false"
+		app:cardCornerRadius="2dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<LinearLayout
+			android:paddingTop="16dp"
+			android:paddingBottom="16dp"
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<!--Desc-->
+			<TextView
+				android:text="@string/descricao"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_marginLeft="16dp"
+				android:layout_marginTop="16dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+			<TextView
+				android:id="@+id/tDesc"
+				android:layout_marginLeft="16dp"
+				android:layout_marginTop="10dp"
+				android:ellipsize="end"
+				android:textSize="16sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+	</android.support.v7.widget.CardView>
+
+	<!--CardView com o vídeo-->
+	<android.support.v7.widget.CardView
+		app:cardCornerRadius="2dp"
+		app:cardUseCompatPadding="false"
+		app:cardPreventCornerOverlap="false"
+		app:cardElevation="6dp"
+		android:layout_margin="6dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<LinearLayout
+			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 
+			<!-- Video -->
 			<TextView
-				android:id="@+id/tDesc"
-				android:textColor="@color/primary_dark"
-				android:layout_margin="8dp"
+				android:text="@string/video"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_marginTop="16dp"
+				android:layout_marginLeft="16dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<FrameLayout
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"/>
-		</ScrollView>
+				android:layout_height="150dp">
+				<ImageView
+					android:id="@+id/img"
+					android:alpha="0.5"
+					android:layout_gravity="center"
+					android:layout_width="@dimen/foto_carro_width"
+					android:layout_height="@dimen/foto_carro_height" />
+				<ImageView
+					android:src="@drawable/play"
+					android:alpha="0.5"
+					android:layout_gravity="center"
+					android:layout_width="100dp"
+					android:layout_height="100dp" />
+			</FrameLayout>
+
+			<TextView
+				android:id="@+id/tVideo"
+				android:textSize="16sp"
+				android:ellipsize="end"
+				android:layout_marginTop="10dp"
+				android:layout_marginLeft="16dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+	</android.support.v7.widget.CardView>
+
+	<!--CardView com o mapa-->
+	<android.support.v7.widget.CardView
+		app:cardUseCompatPadding="false"
+		app:cardPreventCornerOverlap="false"
+		app:cardElevation="3dp"
+		android:layout_marginBottom="10dp"
+		android:layout_margin="6dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<!--Mapa-->
+			<TextView
+				android:text="@string/mapa"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_marginTop="16dp"
+				android:layout_marginLeft="16dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+			<!--No capítulo sobre Mapas vamos colocar um mapa aqui-->
+			<TextView
+				android:text="Mapa aqui "
+				android:layout_margin="16dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
 	</android.support.v7.widget.CardView>
 </LinearLayout>
