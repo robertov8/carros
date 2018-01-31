@@ -5,6 +5,7 @@ import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.extensions.loadUrl
 import br.com.livroandroid.carros.extensions.setupToolbar
+import kotlinx.android.synthetic.main.activity_carro.*
 import kotlinx.android.synthetic.main.activity_carro_contents.*
 
 class CarroActivity : BaseActivity() {
@@ -23,6 +24,6 @@ class CarroActivity : BaseActivity() {
     private fun initViews() {
         // Variáveis geradas automaticamente pelo Kotlin Extensions (veja import)
         tDesc.text = carro.desc
-        img.loadUrl(carro.urlFoto)
+        appBarImg.loadUrl(carro.urlFoto)
     }
 }
