@@ -1,6 +1,5 @@
 package br.com.livroandroid.carros.activity
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.domain.TipoCarro
@@ -8,7 +7,7 @@ import br.com.livroandroid.carros.extensions.addFragment
 import br.com.livroandroid.carros.extensions.setupToolbar
 import br.com.livroandroid.carros.fragments.CarrosFragment
 
-class CarrosActivity : AppCompatActivity() {
+class CarrosActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

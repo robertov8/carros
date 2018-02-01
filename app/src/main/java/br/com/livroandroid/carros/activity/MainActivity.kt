@@ -2,7 +2,6 @@ package br.com.livroandroid.carros.activity
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -28,8 +27,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         // FAB (variável fab gerada automaticamente pelo Kotlin Extensions
         fab.setOnClickListener {
-            val snack = Snackbar.make(it, "Clicou no botão FAB!", Snackbar.LENGTH_LONG)
-            snack.show()
+            startActivity<CarroFormActivity>()
         }
     }
 
