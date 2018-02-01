@@ -1,19 +1,30 @@
 package br.com.livroandroid.carros.domain
 
-import android.util.Log
 import br.com.livroandroid.carros.extensions.fromJson
-import java.net.URL
+import br.com.livroandroid.carros.extensions.toJson
+import br.com.livroandroid.carros.utils.HttpHelper
 
 object CarroService {
-    private val TAG = "livro"
+    private val BASE_URL = "http://livrowebservices.com.br/rest/carros"
 
     // Busca os carros por tipo (clássicos, esportivos ou luxo)
     fun getCarros(tipo: TipoCarro): List<Carro> {
-        val url = "http://livrowebservices.com.br/rest/carros/tipo/${tipo.name}"
-        Log.d(TAG, url)
-        val json = URL(url).readText()
-        val carros = fromJson<List<Carro>>(json)
-        Log.d(TAG, "${carros.size} carros encontrados.")
-        return carros
+        val url = "$BASE_URL/tipo/${tipo.name}"
+        val json = HttpHelper.get(url)
+        return fromJson<List<Carro>>(json)
+    }
+
+    // Salva um carro
+    fun save(carro: Carro): Response {
+        // Faz POST do JSON carro
+        val json = HttpHelper.post(BASE_URL, carro.toJson())
+        return fromJson<Response>(json)
+    }
+
+    // Deleta um carro
+    fun delete(carro: Carro): Response {
+        val url = "$BASE_URL/${carro.id}"
+        val json = HttpHelper.delete(url)
+        return fromJson<Response>(json)
     }
 }
