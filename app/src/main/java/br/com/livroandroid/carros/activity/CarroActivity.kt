@@ -5,11 +5,12 @@ import android.view.Menu
 import android.view.MenuItem
 import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.domain.Carro
+import br.com.livroandroid.carros.domain.CarroService
 import br.com.livroandroid.carros.extensions.loadUrl
 import br.com.livroandroid.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro.*
 import kotlinx.android.synthetic.main.activity_carro_contents.*
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.*
 
 class CarroActivity : BaseActivity() {
     val carro by lazy { intent.getParcelableExtra<Carro>("carro") }
@@ -36,6 +37,7 @@ class CarroActivity : BaseActivity() {
         return true
     }
 
+    // Tratar os eventos do menu
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_editar -> {
@@ -43,9 +45,29 @@ class CarroActivity : BaseActivity() {
                 finish()
             }
             R.id.action_deletar -> {
-                TODO("deletar o carro")
+                alert(R.string.msg_confirma_excluir_carro, R.string.app_name) {
+                    positiveButton(R.string.sim) {
+                         // Confirmar o excluir
+                        taskExcluir()
+                    }
+                    negativeButton(R.string.nao) {
+                         // Não confirmou...
+                    }
+                }.show()
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // Excluir um carro do servidor
+    private fun taskExcluir() {
+        doAsync {
+            val response = CarroService.delete(carro)
+
+            uiThread {
+                toast(response.msg)
+                finish()
+            }
+        }
     }
 }
