@@ -6,12 +6,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.activity.CarroActivity
 import br.com.livroandroid.carros.adapter.CarroAdapter
 import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.domain.CarroService
 import br.com.livroandroid.carros.domain.TipoCarro
+import br.com.livroandroid.carros.extensions.toast
+import br.com.livroandroid.carros.utils.AndroidUtils
 import kotlinx.android.synthetic.main.fragment_carros.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
@@ -45,7 +48,14 @@ class CarrosFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        taskCarros()
+
+        val internetOk = AndroidUtils.isNetworkAvailable(context)
+
+        if (!internetOk) {
+            toast("Sem acesso a internet.", Toast.LENGTH_LONG)
+        } else {
+            taskCarros()
+        }
     }
 
     private fun taskCarros() {
