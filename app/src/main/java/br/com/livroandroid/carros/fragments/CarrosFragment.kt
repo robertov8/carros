@@ -13,7 +13,9 @@ import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.domain.CarroService
 import br.com.livroandroid.carros.domain.TipoCarro
 import kotlinx.android.synthetic.main.fragment_carros.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.uiThread
 
 class CarrosFragment : BaseFragment() {
     private var tipo: TipoCarro = TipoCarro.classicos
@@ -47,10 +49,16 @@ class CarrosFragment : BaseFragment() {
     }
 
     private fun taskCarros() {
-        // Busca os carros
-        this.carros = CarroService.getCarros(context, tipo)
-        // Atualiza a lista
-        recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it)}
+        // Abre uma thread
+        doAsync {
+            // Busca os carros
+            carros = CarroService.getCarros(tipo)
+            // Atualiza a lista na UI Thread
+            uiThread {
+                // Atualiza a lista
+                recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it)}
+            }
+        }
     }
 
     private fun onClickCarro(carro: Carro) {
