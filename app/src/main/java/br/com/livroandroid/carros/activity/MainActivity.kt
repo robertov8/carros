@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
@@ -12,6 +13,7 @@ import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.adapter.TabsAdapter
 import br.com.livroandroid.carros.domain.TipoCarro
 import br.com.livroandroid.carros.extensions.setupToolbar
+import br.com.livroandroid.carros.utils.Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -75,5 +77,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // Cor branca no texto (o fundo azul é definido no layout)
         val cor = ContextCompat.getColor(context, R.color.white)
         tabLayout.setTabTextColors(cor, cor)
+
+        // Salva e Recupera a última Tab acessada.
+        val tabIdx = Prefs.tabIdx
+        viewPager.currentItem = tabIdx
+        viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) { }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) { }
+            override fun onPageSelected(page: Int) {
+                // Salva o índice da página/tab selecionada
+                Prefs.tabIdx = page
+            }
+        })
     }
 }
