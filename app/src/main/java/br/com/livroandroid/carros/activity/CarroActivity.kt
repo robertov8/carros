@@ -1,6 +1,8 @@
 package br.com.livroandroid.carros.activity
 
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import br.com.livroandroid.carros.R
@@ -32,6 +34,13 @@ class CarroActivity : BaseActivity() {
         // Variáveis geradas automaticamente pelo Kotlin Extensions (veja import)
         tDesc.text = carro.desc
         appBarImg.loadUrl(carro.urlFoto)
+
+        doAsync {
+            val favorito = FavoritosService.isFavorito(carro)
+            uiThread {
+                setFavoriteColor(favorito)
+            }
+        }
     }
 
     // Adiciona as opções de Salvar e Deletar no menu
@@ -81,11 +90,33 @@ class CarroActivity : BaseActivity() {
 
             uiThread {
                 // Alerta de sucesso
-                toast(if (favoritado)
+                val msg = if (favoritado) {
+                    setFavoriteColor(favoritado)
                     R.string.msg_carro_favoritado
-                else
-                    R.string.msg_carro_desfavoritado)
+                } else {
+                    setFavoriteColor(favoritado)
+                    R.string.msg_carro_desfavoritado
+                }
+
+                toast(msg)
             }
         }
+    }
+
+    // Desenha a cor do FAB conforme está favoritado ou não
+    private fun setFavoriteColor(favorito: Boolean) {
+        // Troca a cor conforme o status do favoritos
+        val fundo = ContextCompat.getColor(this, if (favorito)
+                R.color.favorito_on
+            else
+                R.color.favorito_off)
+
+        val cor = ContextCompat.getColor(this,
+                if (favorito)
+                    R.color.yellow
+                else
+                    R.color.favorito_on)
+        fab.backgroundTintList = ColorStateList(arrayOf(intArrayOf(0)), intArrayOf(fundo))
+        fab.setColorFilter(cor)
     }
 }
