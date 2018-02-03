@@ -72,13 +72,16 @@
 			<FrameLayout
 				android:layout_width="match_parent"
 				android:layout_height="150dp">
+				<!-- Foto do carro -->
 				<ImageView
 					android:id="@+id/img"
 					android:alpha="0.5"
 					android:layout_gravity="center"
 					android:layout_width="@dimen/foto_carro_width"
 					android:layout_height="@dimen/foto_carro_height" />
+				<!-- Botão de Play -->
 				<ImageView
+					android:id="@+id/imgPlayVideo"
 					android:src="@drawable/play"
 					android:alpha="0.5"
 					android:layout_gravity="center"
