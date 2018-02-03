@@ -1,5 +1,8 @@
 package br.com.livroandroid.carros.activity
 
+import android.app.Activity
+import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,10 +10,8 @@ import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.domain.CarroService
 import br.com.livroandroid.carros.domain.TipoCarro
-import br.com.livroandroid.carros.extensions.isEmpty
-import br.com.livroandroid.carros.extensions.loadUrl
-import br.com.livroandroid.carros.extensions.setupToolbar
-import br.com.livroandroid.carros.extensions.string
+import br.com.livroandroid.carros.extensions.*
+import br.com.livroandroid.carros.utils.CameraHelper
 import kotlinx.android.synthetic.main.activity_carro_form.*
 import kotlinx.android.synthetic.main.activity_carro_form_contents.*
 import org.jetbrains.anko.doAsync
@@ -20,6 +21,7 @@ import org.jetbrains.anko.uiThread
 class CarroFormActivity : BaseActivity() {
     // O carro pode ser nulo caso de um Novo carro
     val carro: Carro? by lazy { intent.getParcelableExtra<Carro>("carro") }
+    val camera = CameraHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,24 +31,14 @@ class CarroFormActivity : BaseActivity() {
         setupToolbar(R.id.toolbar, carro?.nome ?: getString(R.string.novo_carro))
         // Atualiza os dados do formulário
         initViews()
+        // Inicia a camera
+        camera.init(savedInstanceState)
     }
 
-    // Inicializa as views
-    private fun initViews() {
-        // A função apply some é executada se o objeto não for nulo
-        carro?.apply {
-            // Foto do carro
-            appBarImg.loadUrl(carro?.urlFoto)
-            // Dados do carro
-            tDesc.string = desc
-            tNome.string = nome
-            // Tipo do carro
-            when (tipo) {
-                "classicos" -> radioTipo.check(R.id.tipoClassico)
-                "esportivos" -> radioTipo.check(R.id.tipoEsportivo)
-                "luxo" -> radioTipo.check(R.id.tipoLuxo)
-            }
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Salva o estado do arquivo caso gire a tela
+        camera.onSaveInstanceState(outState)
     }
 
     // Adiciona as opções Salvar e Deletar no menu
@@ -64,6 +56,27 @@ class CarroFormActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // Inicializa as views
+    private fun initViews() {
+        // Ao clicar no header da foto abre a câmera
+        appBarImg.onClick {  onClickAppBarImg() }
+
+        // A função apply some é executada se o objeto não for nulo
+        carro?.apply {
+            // Foto do carro
+            appBarImg.loadUrl(carro?.urlFoto)
+            // Dados do carro
+            tDesc.string = desc
+            tNome.string = nome
+            // Tipo do carro
+            when (tipo) {
+                "classicos" -> radioTipo.check(R.id.tipoClassico)
+                "esportivos" -> radioTipo.check(R.id.tipoEsportivo)
+                "luxo" -> radioTipo.check(R.id.tipoLuxo)
+            }
+        }
+    }
+
     // Salva o carro no ws
     private fun taskSalvar() {
         if (tNome.isEmpty()) {
@@ -78,6 +91,11 @@ class CarroFormActivity : BaseActivity() {
             return
         }
 
+        val dialog = ProgressDialog.show(this,
+                        "Download", "Salvando o carro, aguarde...",
+                false,
+                true)
+
         doAsync {
             // Cria um carro para salvar/atualizar
             val c = carro ?: Carro()
@@ -90,13 +108,52 @@ class CarroFormActivity : BaseActivity() {
                 else -> TipoCarro.luxo.name
             }
 
+            // Se tiver foto, faz upload
+            val file = camera.file
+            if (file != null && file.exists()) {
+                val response = CarroService.postFoto(file)
+                if (response.isOk()) {
+                    // Atualiza a URL da foto do carro
+                    c.urlFoto = response.url
+                }
+            }
+
             // Salva o carro no servidor
             val response = CarroService.save(c)
 
             uiThread {
                 // Mensagem com a resposta do servidor
                 toast(response.msg)
+                dialog.dismiss()
                 finish()
+            }
+        }
+    }
+
+    // Ao clicar na imagem do AppHelper abre a câmera
+    private fun onClickAppBarImg() {
+        val ms = System.currentTimeMillis()
+        // Nome do arquivo da foto
+        val fileName = if (carro != null) {
+            "foto_carro_${carro?.id}.jpg"
+        } else {
+            "foto_carro_$ms.jpg"
+        }
+        // Abre a câmera
+        val intent = camera.open(this, fileName)
+        startActivityForResult(intent, 0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            // Resize da imagem
+            val bitmap = camera.getBitmap(600, 600)
+            if (bitmap != null) {
+                // Salva arquivo neste tamanho
+                camera.save(bitmap)
+                // Mostra a foto do carro
+                appBarImg.setImageBitmap(bitmap)
             }
         }
     }

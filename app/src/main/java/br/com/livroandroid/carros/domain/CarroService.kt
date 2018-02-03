@@ -1,9 +1,13 @@
 package br.com.livroandroid.carros.domain
 
+import android.util.Base64
 import br.com.livroandroid.carros.domain.dao.DatabaseManager
 import br.com.livroandroid.carros.domain.retrofit.CarrosREST
+import br.com.livroandroid.carros.extensions.fromJson
+import br.com.livroandroid.carros.utils.HttpHelper
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 
 object CarroService {
     private val BASE_URL = "http://livrowebservices.com.br/rest/carros/"
@@ -41,5 +45,15 @@ object CarroService {
             dao.delete(carro)
         }
         return response
+    }
+
+    fun postFoto(file: File): Response {
+        val url = "${BASE_URL}postFotoBase64"
+        // Converte para Base64
+        val bytes = file.readBytes()
+        val base64 = Base64.encodeToString(bytes, Base64.NO_WRAP)
+        val params = mapOf("fileName" to file.name, "base64" to base64)
+        val json = HttpHelper.postForm(url, params)
+        return fromJson<Response>(json)
     }
 }
