@@ -1,9 +1,13 @@
 package br.com.livroandroid.carros.domain
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
 
+@Entity(tableName = "carro")
 class Carro : Parcelable {
+    @PrimaryKey
     var id: Long = 0
     var tipo = ""
     var nome = ""

@@ -1,5 +1,6 @@
 package br.com.livroandroid.carros.domain
 
+import br.com.livroandroid.carros.domain.dao.DatabaseManager
 import br.com.livroandroid.carros.domain.retrofit.CarrosREST
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,6 +34,12 @@ object CarroService {
     // Deleta um carro
     fun delete(carro: Carro): Response {
         val call = service.delete(carro.id)
-        return call.execute().body()
+        val response = call.execute().body()
+        if (response.isOk()) {
+            // Se removeu do servidor, remove dos favoritos
+            val dao = DatabaseManager.getCarroDAO()
+            dao.delete(carro)
+        }
+        return response
     }
 }
