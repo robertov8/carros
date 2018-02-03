@@ -6,6 +6,7 @@ import android.view.MenuItem
 import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.domain.CarroService
+import br.com.livroandroid.carros.domain.FavoritosService
 import br.com.livroandroid.carros.extensions.loadUrl
 import br.com.livroandroid.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro.*
@@ -23,6 +24,8 @@ class CarroActivity : BaseActivity() {
         setupToolbar(R.id.toolbar, carro.nome, true)
         // Atualiza os dados do carro na tela
         initViews()
+        // Variável gerada automaticamente pelo Kotlin Extensions
+        fab.setOnClickListener { onClickFavoritar(carro) }
     }
 
     private fun initViews() {
@@ -67,6 +70,21 @@ class CarroActivity : BaseActivity() {
             uiThread {
                 toast(response.msg)
                 finish()
+            }
+        }
+    }
+
+    // Adiciona ou Remove o carro dos favoritos
+    private fun onClickFavoritar(carro: Carro) {
+        doAsync {
+            val favoritado = FavoritosService.favoritar(carro)
+
+            uiThread {
+                // Alerta de sucesso
+                toast(if (favoritado)
+                    R.string.msg_carro_favoritado
+                else
+                    R.string.msg_carro_desfavoritado)
             }
         }
     }

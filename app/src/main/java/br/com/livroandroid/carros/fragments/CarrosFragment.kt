@@ -20,15 +20,17 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
 
-class CarrosFragment : BaseFragment() {
+open class CarrosFragment : BaseFragment() {
     private var tipo: TipoCarro = TipoCarro.classicos
-    private var carros = listOf<Carro>()
+    protected var carros = listOf<Carro>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Lê o parâmetro tipo enviado (clássicos, esportivos ou luxo)
-        tipo = arguments.getSerializable("tipo") as TipoCarro
+        if (arguments != null) {
+            tipo = arguments.getSerializable("tipo") as TipoCarro
+        }
     }
 
     // Cria a view do fragment
@@ -58,7 +60,7 @@ class CarrosFragment : BaseFragment() {
         }
     }
 
-    private fun taskCarros() {
+    open fun taskCarros() {
         // Abre uma thread
         doAsync {
             // Busca os carros
@@ -71,7 +73,7 @@ class CarrosFragment : BaseFragment() {
         }
     }
 
-    private fun onClickCarro(carro: Carro) {
+    open fun onClickCarro(carro: Carro) {
         // Ao clicar no carro vamos navegar para a tela de detalhes[
         activity.startActivity<CarroActivity>("carro" to carro)
     }
