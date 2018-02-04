@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.livroandroid.carros">
 
+    <!-- Acessar a internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Ver informações da rede -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Mapas V2 depende da OpenGL ES V2 -->
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
     <application
         android:name=".CarrosApplication"
@@ -49,5 +53,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <!-- Google Play Services -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!-- Chave de acesso (API Key) criada ja página de Console -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@string/API_KEY" />
     </application>
 </manifest>
