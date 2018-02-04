@@ -15,8 +15,10 @@ class Carro : Parcelable {
     var urlFoto = ""
     var urlInfo = ""
     var urlVideo = ""
-    var latitude = ""
+    var latitude: String = ""
+        get() = if (field.trim().isEmpty()) "0.0" else field
     var longitude = ""
+        get() = if (field.trim().isEmpty()) "0.0" else field
 
     override fun toString(): String {
         return "Carro(nome='$nome')"

@@ -17,6 +17,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Camera -->
+        <provider
+            android:authorities="${applicationId}.provider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <!-- Google Play Services -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!-- Chave de acesso (API Key) criada ja página de Console -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/API_KEY" />
+
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.NavDrawer">
@@ -42,25 +63,5 @@
         <activity
             android:name=".activity.CarroFormActivity"
             android:parentActivityName=".activity.MainActivity"/>
-
-        <!-- Camera -->
-        <provider
-            android:authorities="${applicationId}.provider"
-            android:name="android.support.v4.content.FileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
-        </provider>
-
-        <!-- Google Play Services -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <!-- Chave de acesso (API Key) criada ja página de Console -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@string/API_KEY" />
     </application>
 </manifest>

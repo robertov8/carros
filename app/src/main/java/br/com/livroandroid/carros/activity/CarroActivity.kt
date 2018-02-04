@@ -13,6 +13,7 @@ import br.com.livroandroid.carros.domain.CarroService
 import br.com.livroandroid.carros.domain.FavoritosService
 import br.com.livroandroid.carros.extensions.loadUrl
 import br.com.livroandroid.carros.extensions.setupToolbar
+import br.com.livroandroid.carros.fragments.MapaFragment
 import kotlinx.android.synthetic.main.activity_carro.*
 import kotlinx.android.synthetic.main.activity_carro_contents.*
 import org.jetbrains.anko.*
@@ -45,6 +46,13 @@ class CarroActivity : BaseActivity() {
             intent.setDataAndType(Uri.parse(url), "video/*")
             startActivity(intent)
         }
+        // Adiciona o fragment do mapa
+        val mapaFragment = MapaFragment()
+        mapaFragment.arguments = intent.extras
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.mapaFragment, mapaFragment)
+                .commit()
 
         doAsync {
             val favorito = FavoritosService.isFavorito(carro)
