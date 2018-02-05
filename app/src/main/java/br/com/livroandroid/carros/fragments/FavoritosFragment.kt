@@ -32,6 +32,6 @@ class FavoritosFragment : CarrosFragment() {
     @Subscribe
     fun onRefresh(event: FavoritoEvent) {
         taskCarros()
-        Log.d("event", "send FavoritoEvent")
+        Log.d("event", "receive FavoritoEvent")
     }
 }
