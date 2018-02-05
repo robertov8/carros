@@ -48,8 +48,8 @@ open class CarrosFragment : BaseFragment() {
         recyclerView.setHasFixedSize(true)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         val internetOk = AndroidUtils.isNetworkAvailable(context)
 
