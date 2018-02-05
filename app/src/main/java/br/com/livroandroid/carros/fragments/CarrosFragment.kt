@@ -3,6 +3,7 @@ package br.com.livroandroid.carros.fragments
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,12 @@ import br.com.livroandroid.carros.adapter.CarroAdapter
 import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.domain.CarroService
 import br.com.livroandroid.carros.domain.TipoCarro
+import br.com.livroandroid.carros.domain.event.SaveCarroEvent
 import br.com.livroandroid.carros.extensions.toast
 import br.com.livroandroid.carros.utils.AndroidUtils
 import kotlinx.android.synthetic.main.fragment_carros.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
@@ -31,6 +35,8 @@ open class CarrosFragment : BaseFragment() {
         if (arguments != null) {
             tipo = arguments.getSerializable("tipo") as TipoCarro
         }
+        // Registra os eventos do bus
+        EventBus.getDefault().register(this)
     }
 
     // Cria a view do fragment
@@ -58,6 +64,19 @@ open class CarrosFragment : BaseFragment() {
         } else {
             taskCarros()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Cancela os eventos do bus
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe
+    fun onRefresh(event: SaveCarroEvent) {
+        // Recebe p evento do bus
+        taskCarros()
+        Log.d("event", "receive SaveCarroEvent")
     }
 
     open fun taskCarros() {

@@ -5,17 +5,21 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.domain.CarroService
 import br.com.livroandroid.carros.domain.FavoritosService
+import br.com.livroandroid.carros.domain.event.FavoritoEvent
+import br.com.livroandroid.carros.domain.event.SaveCarroEvent
 import br.com.livroandroid.carros.extensions.loadUrl
 import br.com.livroandroid.carros.extensions.setupToolbar
 import br.com.livroandroid.carros.fragments.MapaFragment
 import kotlinx.android.synthetic.main.activity_carro.*
 import kotlinx.android.synthetic.main.activity_carro_contents.*
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.*
 
 class CarroActivity : BaseActivity() {
@@ -98,6 +102,9 @@ class CarroActivity : BaseActivity() {
             uiThread {
                 toast(response.msg)
                 finish()
+                // Dispara um evento para atualizar a lista de carros
+                EventBus.getDefault().post(SaveCarroEvent(carro))
+                Log.d("event", "send SaveCarroEvent")
             }
         }
     }
@@ -118,6 +125,9 @@ class CarroActivity : BaseActivity() {
                 }
 
                 toast(msg)
+                // Dispara um evento para atualizar a lista de favoritos
+                EventBus.getDefault().post(FavoritoEvent(carro))
+                Log.d("event", "send FavoritoEvent")
             }
         }
     }

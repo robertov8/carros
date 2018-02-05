@@ -54,4 +54,6 @@ dependencies {
     // Google Play Services
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
     implementation 'com.google.android.gms:play-services-location:11.8.0'
+    // Bus de Eventos
+    implementation 'org.greenrobot:eventbus:3.0.0'
 }
